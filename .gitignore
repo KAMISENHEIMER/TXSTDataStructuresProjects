@@ -31,5 +31,12 @@
 *.out
 *.app
 
+*.stackdump
+*/.DS_store/*
+
+# Compiler Files
+*/.idea/*
+*/.vscode/*
+
 # Practice Project
 /RecursionPractice/*
