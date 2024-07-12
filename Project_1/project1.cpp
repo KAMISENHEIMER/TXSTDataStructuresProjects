@@ -183,9 +183,7 @@ RecursiveList Reverse(RecursiveList list) {
 //
 //
 // COMMENTS:
-// Add comments here that might help us to understand your thought process,
-// especially if you're unable to finish the pseudocode or code. This can help
-// us award points in the code logic category.
+// None
 RecursiveList Append(RecursiveList first_list, RecursiveList second_list) {
     if (!ListIsEmpty(ListRest(first_list))) {   //continue if the rest of the first list is not empty
         return MakeList(ListFirst(first_list), Append(ListRest(first_list), second_list));  //venture further into the first list, while keeping track of the current value.
@@ -201,17 +199,18 @@ RecursiveList Append(RecursiveList first_list, RecursiveList second_list) {
 //
 // PSEUDOCODE:
 // algorithm Chop
-//   Your pseudocode goes here. You do not need to define inputs, outputs, or
-//   side effects, since the requires, modifies, and effects statements are
-//   already provided above.
+//   check if n is greater than 0, and if the rest of the list is not empty
 //
 // COMMENTS:
 // Add comments here that might help us to understand your thought process,
 // especially if you're unable to finish the pseudocode or code. This can help
 // us award points in the code logic category.
 RecursiveList Chop(RecursiveList list, unsigned int n) {
-  // Implement this function.
-  return list;
+    if (!ListIsEmpty(ListRest(list))) {
+        return MakeList(ListFirst(list), Chop(ListRest(list), n--));
+    }
+
+
 }
 
 

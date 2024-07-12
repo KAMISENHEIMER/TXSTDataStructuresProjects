@@ -81,7 +81,7 @@ int main() {
   std::cout << std::endl;
   PrintList(Chop(listA, 2));
   std::cout << std::endl;
-  PrintList(Chop(listA, 3));
+  PrintList(Chop(listA, 6));
   std::cout << std::endl;
 
   std::cout << "QUESTION 7" << std::endl;
