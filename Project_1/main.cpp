@@ -79,9 +79,9 @@ int main() {
   std::cout << std::endl;
   PrintList(Chop(listA, 1));
   std::cout << std::endl;
-  PrintList(Chop(listA, 2));
+  PrintList(Chop(listA, 3));
   std::cout << std::endl;
-  PrintList(Chop(listA, 6));
+  PrintList(Chop(listA, 5));
   std::cout << std::endl;
 
   std::cout << "QUESTION 7" << std::endl;

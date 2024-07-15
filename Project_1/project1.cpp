@@ -162,7 +162,7 @@ RecursiveList FilterEven(RecursiveList list) {
 // I reverted to checking the rest of the list in this one, because the problem is simple enough that
 // the solution still looks clean.
 RecursiveList Reverse(RecursiveList list) {
-    if (!ListIsEmpty(ListRest(list))) {     //if the current list is not empty continue
+    if (!ListIsEmpty(list) && !ListIsEmpty(ListRest(list))) {     //if the current list is not empty continue
         return Append(Reverse(ListRest(list)), MakeList(ListFirst(list), MakeList()));  //continue venturing into the list, while appending the current value to the end of the list
     }
     return list;       //if the current list is empty, return the current value (the last value in the list)
@@ -198,21 +198,36 @@ RecursiveList Append(RecursiveList first_list, RecursiveList second_list) {
 // EFFECTS: returns the list equal to list without its last n elements
 //
 // PSEUDOCODE:
+// algorithm ChopHelper
+//   check if n is greater than 0, and the list is not empty
+//     if so, continue into the recursion with the rest of the list, and n decreased by 1
+//     if not, return the current list
+//
 // algorithm Chop
-//   check if n is greater than 0, and if the rest of the list is not empty
+//     reverse the given list,
+//     pass it to the recursive function, ChopHelper
+//     reverse the chopped list, putting it at the correct order to return
 //
 // COMMENTS:
-// Add comments here that might help us to understand your thought process,
-// especially if you're unable to finish the pseudocode or code. This can help
-// us award points in the code logic category.
-RecursiveList Chop(RecursiveList list, unsigned int n) {
-    if (!ListIsEmpty(ListRest(list))) {
-        return MakeList(ListFirst(list), Chop(ListRest(list), n--));
-    }
+// I feel like there should be a way to do this problem without a helper function and reversing the list,
+// but even after thinking long and hard about it, I could not come up with one.
+RecursiveList ChopHelper(RecursiveList list, unsigned int n) {
 
+    if (n>0 && !ListIsEmpty(list)) {
+        return ChopHelper(ListRest(list), --n);
+    }
+    return list;
 
 }
 
+RecursiveList Chop(RecursiveList list, unsigned int n) {
+    RecursiveList returnList = Reverse(list);
+    returnList = ChopHelper(returnList, n);
+    returnList = Reverse(returnList);
+    return returnList;
+
+
+}
 
 /** QUESTION 7: ROTATE **/
 
@@ -222,17 +237,18 @@ RecursiveList Chop(RecursiveList list, unsigned int n) {
 //
 // PSEUDOCODE:
 // algorithm Rotate
-//   Your pseudocode goes here. You do not need to define inputs, outputs, or
-//   side effects, since the requires, modifies, and effects statements are
-//   already provided above.
+//   check if n is greater than 0, and the list is not empty
+//     if so, continue into the recursion with the first value appended to the end of the list, and decrease n by 1.
+//     if not, return the current list
 //
 // COMMENTS:
-// Add comments here that might help us to understand your thought process,
-// especially if you're unable to finish the pseudocode or code. This can help
-// us award points in the code logic category.
+// not too much to say about this one, but I think the append function looks a little clunky,
+// if this were a bigger project I would likely make other smaller functions to make this look cleaner.
 RecursiveList Rotate(RecursiveList list, unsigned int n) {
-  // Implement this function.
-  return list;
+    if (n>0 && !ListIsEmpty(list)) {
+        return Rotate(Append(ListRest(list), MakeList(ListFirst(list),MakeList())),--n);
+    }
+    return list;
 }
 
 
