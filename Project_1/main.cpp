@@ -101,9 +101,9 @@ int main() {
   std::cout << std::endl;
   PrintList(InsertList(listA, listB, 1));
   std::cout << std::endl;
-  PrintList(InsertList(listA, listB, 2));
-  std::cout << std::endl;
   PrintList(InsertList(listA, listB, 3));
+  std::cout << std::endl;
+  PrintList(InsertList(listA, listB, 5));
   std::cout << std::endl;
 
 

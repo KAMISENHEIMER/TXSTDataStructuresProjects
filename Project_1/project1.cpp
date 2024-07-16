@@ -20,18 +20,20 @@
 //
 // PSEUDOCODE:
 // algorithm Sum
-//   check if the rest of the list is empty
+//   check if the list is empty
 //     if it is, return the current location + the sum of the rest of the list
-//     if it is not, just return the current location
+//     if it is not, return 0
 //
 // COMMENTS:
 // By checking if the rest of the list is empty, and returning the current location in the base case,
 // I reduce the number of function calls by 1
+// EDIT: The above text is no longer true, I realize that in my ambition for efficiency,
+// my hubris led me down a path in which the case where the given list was empty resulted in an error.
 int Sum(RecursiveList list) {
-    if (!ListIsEmpty(ListRest(list))) {   //if the rest of the list is not empty, continue the recursion
+    if (!ListIsEmpty(list)) {   //if the list is not empty, continue the recursion
         return ListFirst(list) + Sum(ListRest(list));   //add the current value to the sum of the rest of the list
     }
-    return ListFirst(list);     //If the rest of the list was empty, return just this index
+    return 0;     //If the list was empty, return 0
 }
 
 // EFFECTS: returns the product of each element in list, or one if the list is
@@ -46,10 +48,10 @@ int Sum(RecursiveList list) {
 // COMMENTS:
 // Almost entirely the same as the sum function, but a * instead of a +
 int Product(RecursiveList list) {
-    if (!ListIsEmpty(ListRest(list))) {   //if the rest of the list is not empty, continue the recursion
+    if (!ListIsEmpty(list)) {   //if the list is not empty, continue the recursion
         return ListFirst(list) * Product(ListRest(list));   //multiply the current value by the product of the rest of the list
     }
-    return ListFirst(list);     //If the rest of the list was empty, return just this index
+    return 1;     //If list was empty, return 1
 }
 
 
@@ -60,15 +62,15 @@ int Product(RecursiveList list) {
 //
 // PSEUDOCODE:
 // algorithm TailRecursiveSumHelper
-//   check if the rest of the list is empty,
-//     if it is, return the current location + the current sum
+//   check if the list is empty,
+//     if it is, the current sum
 //     if it is not, continue into the recursion with the rest of the list, and the current sum + the current location
 // COMMENTS:
 // This is a Tail Recursive function as the final piece of the function is the recursive piece,
 // which means there are no additional steps after the recursive step.
 int TailRecursiveSumHelper(RecursiveList list, int sum_so_far) {
-    if (ListIsEmpty(ListRest(list))) {
-        return ListFirst(list) + sum_so_far;
+    if (ListIsEmpty(list)) {
+        return sum_so_far;
     }
     return TailRecursiveSumHelper(ListRest(list), ListFirst(list)+sum_so_far);
 
@@ -105,19 +107,16 @@ int TailRecursiveSum(RecursiveList list) {
 // COMMENTS:
 // Checking whether the rest of the list is empty (as opposed to the current value) is causing this code to look a little bloated,
 // but I still think it is more efficient, as it reduces the number of function calls by 1
+// EDIT: due to previously mentioned hubris, I had to fix this function as well, making it more similar to the FilterEven function.
 RecursiveList FilterOdd(RecursiveList list) {
-    if (!ListIsEmpty(ListRest(list))) {   //if the rest of the list is not empty, continue the recursion
+    if (!ListIsEmpty(list)) {   //if the list is not empty, continue the recursion
         if (ListFirst(list)%2==1) {           //if the current value is odd
             return MakeList(ListFirst(list), FilterOdd(ListRest(list)));    //make a list of the current value and all odd numbers in the rest of the list
         } else {                              //if the current value is not odd
             return FilterOdd(ListRest(list));      //skip the current value return the rest of the odd numbers
         }
     }
-    if (ListFirst(list)%2==1) {           //if the rest of the list is empty, check if the last value is odd
-        return list;    //return the final value (as a list so that it works with the rest of the function's processes)
-    } else {                              //if the final value is not odd
-        return MakeList();      //return an empty list
-    }
+    return list;
 }
 
 // EFFECTS: returns a new list containing only the elements of the original list
@@ -179,16 +178,16 @@ RecursiveList Reverse(RecursiveList list) {
 // algorithm Append
 //   check if the current list not empty,
 //     if it is not, venture deeper into the first list, while appending adding the first value to the front of our new list
-//     if it is empty, return the final value in the first list, along with the second list
+//     if it is empty, return the second list
 //
 //
 // COMMENTS:
-// None
+// This function ended up becoming the backbone for many other functions in this project.
 RecursiveList Append(RecursiveList first_list, RecursiveList second_list) {
-    if (!ListIsEmpty(ListRest(first_list))) {   //continue if the rest of the first list is not empty
+    if (!ListIsEmpty(first_list)) {   //continue if the rest of the first list is not empty
         return MakeList(ListFirst(first_list), Append(ListRest(first_list), second_list));  //venture further into the first list, while keeping track of the current value.
     }
-    return MakeList(ListFirst(first_list),second_list);     //return the final value in the first list and the second list
+    return second_list;     //return the second list
 }
 
 
@@ -213,17 +212,17 @@ RecursiveList Append(RecursiveList first_list, RecursiveList second_list) {
 // but even after thinking long and hard about it, I could not come up with one.
 RecursiveList ChopHelper(RecursiveList list, unsigned int n) {
 
-    if (n>0 && !ListIsEmpty(list)) {
-        return ChopHelper(ListRest(list), --n);
+    if (n>0 && !ListIsEmpty(list)) {        //if the list is not empty, and n is greater than 1
+        return ChopHelper(ListRest(list), --n);     //continue into the recursion with the rest of the list and lower n by 1
     }
-    return list;
+    return list;    //return only part of the list after the end continue has been met.
 
 }
 
 RecursiveList Chop(RecursiveList list, unsigned int n) {
-    RecursiveList returnList = Reverse(list);
-    returnList = ChopHelper(returnList, n);
-    returnList = Reverse(returnList);
+    RecursiveList returnList = Reverse(list);   //reverse the given list
+    returnList = ChopHelper(returnList, n);     //chop off the first n values
+    returnList = Reverse(returnList);       //reverse the list again, so it is in the correct order
     return returnList;
 
 
@@ -245,10 +244,10 @@ RecursiveList Chop(RecursiveList list, unsigned int n) {
 // not too much to say about this one, but I think the append function looks a little clunky,
 // if this were a bigger project I would likely make other smaller functions to make this look cleaner.
 RecursiveList Rotate(RecursiveList list, unsigned int n) {
-    if (n>0 && !ListIsEmpty(list)) {
-        return Rotate(Append(ListRest(list), MakeList(ListFirst(list),MakeList())),--n);
+    if (n>0 && !ListIsEmpty(list)) {        //if the list is not empty, and n is greater than 1
+        return Rotate(Append(ListRest(list), MakeList(ListFirst(list),MakeList())),--n);    //move the first value to the end, subtract 1 from n, and continue into the recursion
     }
-    return list;
+    return list;    //return what the current list contains after the end of the end condition is met
 }
 
 
@@ -262,16 +261,15 @@ RecursiveList Rotate(RecursiveList list, unsigned int n) {
 //
 // PSEUDOCODE:
 // algorithm InsertList
-//   Your pseudocode goes here. You do not need to define inputs, outputs, or
-//   side effects, since the requires, modifies, and effects statements are
-//   already provided above.
+//   check if n is greater than 0, and the list is not empty
+//     if so, return the first value, and continue into the recursion with the rest of the list, and decrease n by 1.
+//     if not, the second list, followed by the rest of the first list
 //
 // COMMENTS:
-// Add comments here that might help us to understand your thought process,
-// especially if you're unable to finish the pseudocode or code. This can help
-// us award points in the code logic category.
-RecursiveList InsertList(RecursiveList first_list, RecursiveList second_list,
-                         unsigned int n) {
-  // Implement this function.
-  return first_list;
+// The append function ended up being much more useful than I originally expected.
+RecursiveList InsertList(RecursiveList first_list, RecursiveList second_list, unsigned int n) {
+    if (n>0 && !ListIsEmpty(first_list)) {          //if the list is not empty, and n is greater than 1
+        return MakeList(ListFirst(first_list), InsertList(ListRest(first_list), second_list, --n));     //keep the first value, and venture further into the recursion
+    }
+    return Append(second_list,first_list);      //once the target destination is reached, stick the second array in, and then follow it with the rest of the first array.
 }
