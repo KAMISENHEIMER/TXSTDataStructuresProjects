@@ -33,6 +33,8 @@
 
 *.stackdump
 */.DS_store/*
+*/.DS_Store
+
 
 # Compiler Files
 */.idea/*
