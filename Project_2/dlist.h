@@ -112,22 +112,33 @@ Dlist<T>::~Dlist() {
 // EFFECTS: returns true if list is empty, false otherwise
 template <typename T>
 bool Dlist<T>::IsEmpty() const {
-  // Implement this function.
-  return true;
+  return (first == nullptr);
 }
 
 // MODIFIES: this
 // EFFECTS: inserts o at the front of the list
 template <typename T>
 void Dlist<T>::InsertFront(const T& o) {
-  // Implement this function.
+    node *n = new node();
+    n -> o = o;
+    n -> next = first;
+    first = n;
+    if (last == nullptr) {
+        last = n;
+    }
 }
 
 // MODIFIES: this
 // EFFECTS: inserts o at the back of the list
 template <typename T>
 void Dlist<T>::InsertBack(const T& o) {
-  // Implement this function.
+    node *n = new node();
+    n -> o = o;
+    n -> prev = last;
+    last = n;
+    if (first == nullptr) {
+        first = n;
+    }
 }
 
 // MODIFIES: this
@@ -135,8 +146,21 @@ void Dlist<T>::InsertBack(const T& o) {
 //          throws an instance of emptyList if empty
 template <typename T>
 T Dlist<T>::RemoveFront() {
-  // Implement this function.
-  return this->first->o;
+
+    // empty case
+    if (IsEmpty()) {
+      throw emptyList;
+    }
+    //1 element case
+    if (first->next == nullptr) {
+        last = nullptr;
+    }
+    
+    T data = first->o;
+    node *temp = first;
+    first= first->next;
+    delete temp;
+    return data;
 }
 
 // MODIFIES: this
