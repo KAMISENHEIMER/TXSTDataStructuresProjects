@@ -119,26 +119,42 @@ bool Dlist<T>::IsEmpty() const {
 // EFFECTS: inserts o at the front of the list
 template <typename T>
 void Dlist<T>::InsertFront(const T& o) {
+
+    //initialize new node
     node *n = new node();
     n -> o = o;
     n -> next = first;
-    first = n;
-    if (last == nullptr) {
+    n -> prev = nullptr;
+
+    //empty case
+    if (IsEmpty()) {
         last = n;
+    } else {    //non-empty case
+        first -> prev = n;
     }
+    first = n;
+
 }
 
 // MODIFIES: this
 // EFFECTS: inserts o at the back of the list
 template <typename T>
 void Dlist<T>::InsertBack(const T& o) {
+
+    //initialize new node
     node *n = new node();
     n -> o = o;
+    n -> next = nullptr;
     n -> prev = last;
-    last = n;
-    if (first == nullptr) {
+
+    //empty case
+    if (IsEmpty()) {
         first = n;
+    } else {    //non-empty case
+        last -> next = n;
     }
+    last = n;
+
 }
 
 // MODIFIES: this
@@ -149,18 +165,23 @@ T Dlist<T>::RemoveFront() {
 
     // empty case
     if (IsEmpty()) {
-      throw emptyList;
+        throw emptyList();
+    } else {
+
+        T data = first->o;      //store the data
+        node *temp = first;     //store the pointer
+
+        //1 element case
+        if (first->next == nullptr) {
+            last = nullptr;
+            first = nullptr;
+        } else {    //rest of cases
+            first = first->next;     //move the first pointer to the next one
+            first->prev = nullptr;  //update the new first node's prev pointer
+        }
+        delete temp;            //delete the node
+        return data;            //return the data that was in the node
     }
-    //1 element case
-    if (first->next == nullptr) {
-        last = nullptr;
-    }
-    
-    T data = first->o;
-    node *temp = first;
-    first= first->next;
-    delete temp;
-    return data;
 }
 
 // MODIFIES: this
@@ -169,14 +190,32 @@ T Dlist<T>::RemoveFront() {
 template <typename T>
 T Dlist<T>::RemoveBack()
 {
-  // Implement this function.
-  return this->last->o;
+    // empty case
+    if (IsEmpty()) {
+        throw emptyList();
+    } else {
+
+        T data = last->o;      //store the data
+        node *temp = last;     //store the pointer
+
+        //1 element case
+        if (first->next == nullptr) {
+            last = nullptr;
+            first = nullptr;
+        } else {    //rest of cases
+            last = last->prev;     //move the first pointer to the next one
+            last->next = nullptr;  //update the new first node's prev pointer
+        }
+        delete temp;            //delete the node
+        return data;            //return the data that was in the node
+    }
 }
 
 // EFFECTS: called by constructors to establish empty list invariant
 template <typename T>
 void Dlist<T>::MakeEmpty() {
-  // Implement this function.
+    first = nullptr;
+    last = nullptr;
 }
 
 // EFFECTS: called by copy constructor/operator= to copy nodes
@@ -190,7 +229,12 @@ void Dlist<T>::CopyAll(const Dlist &l) {
 //          all list nodes
 template <typename T>
 void Dlist<T>::RemoveAll() {
-  // Implement this function.
+  while (first != nullptr) {
+      node *temp = first->next;     //store the next pointer
+      delete first;
+      first = temp;
+  }
+  last = nullptr;
 }
 
 /**** INSTRUCTOR NOTE: DO NOT DELETE #endif FROM END OF FILE. ****/

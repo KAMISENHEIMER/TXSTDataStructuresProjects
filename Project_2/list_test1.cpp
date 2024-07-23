@@ -22,19 +22,30 @@ int main() {
     // TEST DLIST OF INTS
 
     std::cout << "TESTS BEGINNING" << std::endl;
-
     Dlist<int> test_list;
+
+    std::cout << "Adding to list" << std::endl;
+
     test_list.InsertFront(2);
     test_list.InsertFront(1);
     test_list.InsertBack(3);
     test_list.InsertBack(4);
+    std::cout << "Printing from front" << std::endl;
     while (!test_list.IsEmpty()) {
+        std::cout << "List is not empty, run again" << std::endl;
         std::cout << test_list.RemoveFront() << std::endl;
+        std::cout << "removed front" << std::endl;
     }
+    std::cout << "test 1 complete" << std::endl;
+
+
+    std::cout << "Adding to list" << std::endl;
     test_list.InsertFront(2);
     test_list.InsertFront(1);
     test_list.InsertBack(3);
     test_list.InsertBack(4);
+
+    std::cout << "Printing from back" << std::endl;
     while (!test_list.IsEmpty()) {
         std::cout << test_list.RemoveBack() << std::endl;
     }
@@ -60,6 +71,7 @@ int main() {
         std::cout << r->uniqname << std::endl;
         delete r;
     }
+
 
     return 0;
 }
