@@ -32,9 +32,7 @@ int main() {
     test_list.InsertBack(4);
     std::cout << "Printing from front" << std::endl;
     while (!test_list.IsEmpty()) {
-        std::cout << "List is not empty, run again" << std::endl;
         std::cout << test_list.RemoveFront() << std::endl;
-        std::cout << "removed front" << std::endl;
     }
     std::cout << "test 1 complete" << std::endl;
 

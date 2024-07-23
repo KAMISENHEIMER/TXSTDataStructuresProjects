@@ -222,7 +222,16 @@ void Dlist<T>::MakeEmpty() {
 //          from a source instance l to this instance
 template <typename T>
 void Dlist<T>::CopyAll(const Dlist &l) {
-  // Implement this function.
+    node *location = l.first;
+    while (location != nullptr) {
+
+        node *n = new node();
+        n->o = location->o;
+        n->next = location->next;
+        n->prev = location->prev;
+
+        location = location->next;
+    }
 }
 
 // EFFECTS: called by destructor and operator= to remove and destroy
