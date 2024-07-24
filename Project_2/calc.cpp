@@ -41,40 +41,80 @@ class badInput {
 
 // EFFECTS: performs + operation
 void DoAdd(Dlist<double> &stack) {
-    double num1 = stack.RemoveFront();
-    double num2 = stack.RemoveFront();
-    stack.InsertFront(num1 + num2);
+    //make sure there are enough values to use
+    if (!stack.IsEmpty()) {     //the first value exists
+        double num1 = stack.RemoveFront();
+        if (!stack.IsEmpty()) {     //the second value exists
+            double num2 = stack.RemoveFront();
+            stack.InsertFront(num1 + num2);     //all values exist, perform the addition and add to stack
+        } else {    //the second value does not exist
+            stack.InsertFront(num1);    //add the first value back into the stack
+            throw emptyList();      //addition not performed, throw empty list error
+        }
+    } else {    //the first value does not exist
+        throw emptyList();      //addition not performed, throw empty list error
+    }
 }
 
 // EFFECTS: performs - operation
-void DoSub(Dlist<double> &stack) {
-    double num1 = stack.RemoveFront();
-    double num2 = stack.RemoveFront();
-    stack.InsertFront(num2 - num1);
+void DoSub(Dlist<double> &stack) {      //exactly the same as the addition, but using - instead
+    //make sure there are enough values to use
+    if (!stack.IsEmpty()) {     //the first value exists
+        double num1 = stack.RemoveFront();
+        if (!stack.IsEmpty()) {     //the second value exists
+            double num2 = stack.RemoveFront();
+            stack.InsertFront(num2 - num1);     //all values exist, perform the subtraction and add to stack
+        } else {    //the second value does not exist
+            stack.InsertFront(num1);    //add the first value back into the stack
+            throw emptyList();      //subtraction not performed, throw empty list error
+        }
+    } else {    //the first value does not exist
+        throw emptyList();      //subtraction not performed, throw empty list error
+    }
 }
 
 // EFFECTS: performs * operation
-void DoMult(Dlist<double> &stack) {
-    double num1 = stack.RemoveFront();
-    double num2 = stack.RemoveFront();
-    stack.InsertFront(num1 * num2);
+void DoMult(Dlist<double> &stack) {      //exactly the same as the addition, but using * instead
+    //make sure there are enough values to use
+    if (!stack.IsEmpty()) {     //the first value exists
+        double num1 = stack.RemoveFront();
+        if (!stack.IsEmpty()) {     //the second value exists
+            double num2 = stack.RemoveFront();
+            stack.InsertFront(num1 * num2);     //all values exist, perform the multiplication and add to stack
+        } else {    //the second value does not exist
+            stack.InsertFront(num1);    //add the first value back into the stack
+            throw emptyList();      //multiplication not performed, throw empty list error
+        }
+    } else {    //the first value does not exist
+        throw emptyList();      //multiplication not performed, throw empty list error
+    }
 }
 
 // EFFECTS: performs / operation
-void DoDiv(Dlist<double> &stack) {
-    double num1 = stack.RemoveFront();
-    double num2 = stack.RemoveFront();
-
-    //divide by zero case
-    if (num1 == 0) {
-        throw divZero();
-    } else {    //all other cases
-        stack.InsertFront(num2 / num1);
+void DoDiv(Dlist<double> &stack) {      //similar to addition, but using / and checking a divide by 0 case
+    //make sure there are enough values to use
+    if (!stack.IsEmpty()) {     //the first value exists
+        double num1 = stack.RemoveFront();
+        if (num1 != 0) {       //the first value is valid (not 0)
+            if (!stack.IsEmpty()) {     //the second value exists
+                double num2 = stack.RemoveFront();
+                stack.InsertFront(num2 / num1);     //all values exist and are valid, perform the division and add to stack
+            } else {    //the second value does not exist
+                stack.InsertFront(num1);    //add the first value back into the stack
+                throw emptyList();      //division not performed, throw empty list error
+            }
+        } else {    //the first value is a zero
+            stack.InsertFront(num1);    //add the first value back into the stack
+            throw divZero();      //division not performed, throw div zero error
+        }
+    } else {    //the first value does not exist
+        throw emptyList();      //division not performed, throw empty list error
     }
 }
 
 // EFFECTS: performs n operation
 void DoNeg(Dlist<double> &stack) {
+    //no need for empty list check, as it is built into the RemoveFront() function, and there would be nothing to add back to the stack
     double num = stack.RemoveFront();
     stack.InsertFront(num * -1);
 
@@ -82,6 +122,7 @@ void DoNeg(Dlist<double> &stack) {
 
 // EFFECTS: performs d operation
 void DoDup(Dlist<double> &stack) {
+    //no need for empty list check, as it is built into the RemoveFront() function, and there would be nothing to add back to the stack
     double num = stack.RemoveFront();
     stack.InsertFront(num);
     stack.InsertFront(num);
@@ -89,14 +130,25 @@ void DoDup(Dlist<double> &stack) {
 
 // EFFECTS: performs r operation
 void DoRev(Dlist<double> &stack) {
-    double num1 = stack.RemoveFront();
-    double num2 = stack.RemoveFront();
-    stack.InsertFront(num1);
-    stack.InsertFront(num2);
+    //make sure there are enough values to use
+    if (!stack.IsEmpty()) {     //the first value exists
+        double num1 = stack.RemoveFront();
+        if (!stack.IsEmpty()) {     //the second value exists
+            double num2 = stack.RemoveFront();
+            stack.InsertFront(num1);
+            stack.InsertFront(num2);     //all values exist, reverse the values
+        } else {    //the second value does not exist
+            stack.InsertFront(num1);    //add the first value back into the stack
+            throw emptyList();      //reverse not performed, throw empty list error
+        }
+    } else {    //the first value does not exist
+        throw emptyList();      //reverse not performed, throw empty list error
+    }
 }
 
 // EFFECTS: performs p operation
 void DoPrint(Dlist<double> &stack) {
+    //no need for empty list check, as it is built into the RemoveFront() function, and there would be nothing to add back to the stack
     double num = stack.RemoveFront();
     std::cout << num << "\n";
     stack.InsertFront(num);
