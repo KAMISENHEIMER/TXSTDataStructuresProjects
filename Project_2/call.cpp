@@ -45,7 +45,33 @@ struct reqNode {
 // pointers in the requests queue, which is a Dlist of pointers to reqNode
 // structs. 
 void ObtainRequests(Dlist<reqNode*> &requests) {
-  // Implement this function.
+    //gets length of input file
+    int lengthOfInputFile;
+    std::cin >> lengthOfInputFile;
+
+    //for each input line
+    for (int i = 0; i < lengthOfInputFile; i++) {
+
+        std::cout << "input another line";
+
+        //grab all 4 input values
+        int timestamp;
+        std::string name;
+        int status;
+        int duration;
+        std::cin >> timestamp >> name >> status >> duration;
+
+        //store them into a reqNode pointer
+        reqNode *n = new reqNode();
+        n->timestamp = timestamp;
+        n -> name = name;
+        n -> status = (Status)status;
+        n -> duration = duration;
+
+        //store the reqNode pointer into the requests stack
+        requests.InsertBack(n);
+
+    }
 }
 
 // EFFECTS: Insert any callers with timestamps equal to the tick number
@@ -59,7 +85,23 @@ void ObtainRequests(Dlist<reqNode*> &requests) {
 // Note: If two (or more) calls have the same timestamp, they should be
 // printed in input file-order, not in priority-order.
 void InsertRequests(Dlist<reqNode*> &requests, Dlist<reqNode*> queues[], int clock, std::string status_names[]) {
-  // Implement this function.
+    //loop through requests until a timestamp greater than the current tick is found
+    //as the timestamps are in order, this ensures we are only adding the timestamps that correspond to the current tick
+
+    if (!requests.IsEmpty()) {
+        reqNode n = requests.RemoveFront();
+        while (n.timestamp <= clock && !requests.IsEmpty()) {
+            queues[n.status].InsertBack(n);
+
+            n = requests.RemoveFront();
+            //inserts n back into the stack if its timestamp is too big
+            if (n.timestamp > clock) {
+                requests.InsertFront(n);
+            }
+        }
+        //TODO Rework this to ensure it accounts for all edge cases
+    }
+
 }
 
 // EFFECTS: Simulate the actions of the agent at this tick. The agent must
@@ -83,8 +125,8 @@ void InsertRequests(Dlist<reqNode*> &requests, Dlist<reqNode*> queues[], int clo
 // If all calls have been placed, answered, and completed, then return true
 // to end the program. Otherwise, return false.
 bool SimulateAgent(Dlist<reqNode*> &requests, Dlist<reqNode*> queues[], int &time_agent_busy) {
-  // Implement this function.
-  return true;
+
+    return true;
 }
 
 /**** INSTRUCTOR NOTE: DO NOT MODIFY BELOW THIS LINE ****/
