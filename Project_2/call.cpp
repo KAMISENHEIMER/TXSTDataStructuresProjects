@@ -52,20 +52,30 @@ void ObtainRequests(Dlist<reqNode*> &requests) {
     //for each input line
     for (int i = 0; i < lengthOfInputFile; i++) {
 
-        std::cout << "input another line";
-
         //grab all 4 input values
         int timestamp;
         std::string name;
-        int status;
+        std::string statusStr;
         int duration;
-        std::cin >> timestamp >> name >> status >> duration;
+        std::cin >> timestamp >> name >> statusStr >> duration;
+
+        //convert status string to enum
+        Status statusEnum;
+        if (statusStr=="silver") {
+            statusEnum = SILVER;
+        } else if (statusStr=="gold") {
+            statusEnum = GOLD;
+        } else if (statusStr=="platinum") {
+            statusEnum = PLATINUM;
+        } else {
+            statusEnum = NONE;
+        }
 
         //store them into a reqNode pointer
         reqNode *n = new reqNode();
         n->timestamp = timestamp;
         n -> name = name;
-        n -> status = (Status)status;
+        n -> status = statusEnum;
         n -> duration = duration;
 
         //store the reqNode pointer into the requests stack
@@ -87,21 +97,21 @@ void ObtainRequests(Dlist<reqNode*> &requests) {
 void InsertRequests(Dlist<reqNode*> &requests, Dlist<reqNode*> queues[], int clock, std::string status_names[]) {
     //loop through requests until a timestamp greater than the current tick is found
     //as the timestamps are in order, this ensures we are only adding the timestamps that correspond to the current tick
-
-    if (!requests.IsEmpty()) {
-        reqNode n = requests.RemoveFront();
-        while (n.timestamp <= clock && !requests.IsEmpty()) {
-            queues[n.status].InsertBack(n);
-
-            n = requests.RemoveFront();
-            //inserts n back into the stack if its timestamp is too big
-            if (n.timestamp > clock) {
+    bool keepGoing = !requests.IsEmpty();
+    while (keepGoing) {
+        if (requests.IsEmpty()) {   //if its empty stop
+            keepGoing = false;
+        } else {    //check the first value
+            reqNode *n = requests.RemoveFront();     //get the next node
+            if (n->timestamp > clock) {          //if the timestamp is higher than the clock, put the node back in and stop
                 requests.InsertFront(n);
+                keepGoing = false;
+            } else {    //not empty and correct timestamp, add it to the correct queue, and print message
+                queues[n->status].InsertBack(n);
+                std::cout << "Call from " << n->name << " a " << status_names[n->status] << " member" << std::endl;
             }
         }
-        //TODO Rework this to ensure it accounts for all edge cases
     }
-
 }
 
 // EFFECTS: Simulate the actions of the agent at this tick. The agent must
@@ -126,7 +136,7 @@ void InsertRequests(Dlist<reqNode*> &requests, Dlist<reqNode*> queues[], int clo
 // to end the program. Otherwise, return false.
 bool SimulateAgent(Dlist<reqNode*> &requests, Dlist<reqNode*> queues[], int &time_agent_busy) {
 
-    return true;
+    return false;
 }
 
 /**** INSTRUCTOR NOTE: DO NOT MODIFY BELOW THIS LINE ****/
