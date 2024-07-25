@@ -135,8 +135,28 @@ void InsertRequests(Dlist<reqNode*> &requests, Dlist<reqNode*> queues[], int clo
 // If all calls have been placed, answered, and completed, then return true
 // to end the program. Otherwise, return false.
 bool SimulateAgent(Dlist<reqNode*> &requests, Dlist<reqNode*> queues[], int &time_agent_busy) {
+    if (time_agent_busy==0) {     //agent is not busy
+        //check calls until a call is answered, or no call was found
+        int currentQueue = 3;
+        while (currentQueue>=0 && time_agent_busy==0) {
+            if (!queues[currentQueue].IsEmpty()) {
+                //call was found
+                reqNode *answeredCall = queues[currentQueue].RemoveFront();
+                time_agent_busy = answeredCall->duration;
+                std::cout << "Answering call from " << answeredCall->name << std::endl;
+            }
+            currentQueue--;
+        }
+    }
 
-    return false;
+    //completion flag, everything is done, this needs to happen before the decrement so it doesn't end early
+    bool complete = requests.IsEmpty() && time_agent_busy == 0 && queues[0].IsEmpty() && queues[1].IsEmpty() && queues[2].IsEmpty() && queues[3].IsEmpty();
+
+    if (time_agent_busy!=0) {     //agent is busy, decrement time and continue
+        time_agent_busy--;
+    }
+
+    return complete;
 }
 
 /**** INSTRUCTOR NOTE: DO NOT MODIFY BELOW THIS LINE ****/
