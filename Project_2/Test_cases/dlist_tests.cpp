@@ -19,6 +19,8 @@ static int intval = 0;
 static const int numints = 4;
 
 int main() {
+  cout<<"starting first test\n";
+
   int cnt = 0;
   //test 1
   Dlist<int> d;
@@ -27,6 +29,8 @@ int main() {
   else cnt++;
 
   //test 2
+    cout<<"starting second test\n";
+
 
   string answer = "Caught front\nCaught back\n";
   string results = "";
@@ -49,8 +53,10 @@ int main() {
   else cnt++;
 
   //test 3
+    cout<<"starting third test\n";
 
-  answer = "20134";
+
+    answer = "20134";
   results = "";
   Dlist<int> d4;
   int numints_5 =5;
@@ -82,6 +88,8 @@ int main() {
   else cnt++;
 
   //test4
+    cout<<"starting fourth test\n";
+
 
   answer = "01230123";
   results = "";
@@ -92,33 +100,63 @@ int main() {
 
   d14 = new Dlist<int>;
 
-  for (i=0; i<numints; i++) {
+    cout<<"starting loop1\n";
+
+    for (i=0; i<numints; i++) {
     ints2[i] = i;
+    cout<<ints2[i];
     d14->InsertFront(ints2[i]);
   }
 
+
+    //while (!d14->IsEmpty()) {
+    //    ip = d14->RemoveBack();
+    //    cout << ip;
+    //}
+
   d24 = new Dlist<int>(*d14);
 
-  for (i=0; i<numints; i++) {
-    ip = d14->RemoveBack();
-    results.append(to_string(ip));
-  }
+
+
+    cout<<"starting loop2\n";
+
+
+    for (i = 0; i < numints; i++) {
+        ip = d14->RemoveBack();
+        cout << ip;
+        results.append(to_string(ip));
+    }
+
 
   delete d14;
 
-  for (i=0; i<numints; i++) {
+    //cout<<"starting test while loop\n";
+    //while (!d24->IsEmpty()) {
+    //    ip = d24->RemoveBack();
+    //    cout << ip;
+    //}
+
+
+
+    cout<<"starting loop3\n";
+    for (i=0; i<numints; i++) {
     ip = d24->RemoveBack();
     results.append(to_string(ip));
   }
 
-  delete d24;
+
+    delete d24;
 
   if(answer != results) cout<<"failed 4th test\n";
   else cnt++;
 
-  //test5
 
-  answer = "000111222333done";
+
+  //test5
+    cout<<"starting fifth test\n";
+
+
+    answer = "000111222333done";
   results = "";
   Dlist<int> d15, d25, d35;
   ip = 0;
@@ -150,9 +188,13 @@ int main() {
   if(answer != results) cout<<"failed 5th test\n";
   else cnt++;
 
-  //test6
 
-  answer = 12;
+
+  //test6
+    cout<<"starting six test\n";
+
+
+    answer = 12;
   Dlist<int> *d16, *d26, *d36;
   ip = 0;
   i = 0;
@@ -187,7 +229,9 @@ int main() {
   results = sum;
   if(answer != results) cout<<"failed 6th test\n";
   else cnt++;
-  
+
+
+
   cout<<cnt<<" out of 6 cases \n";
 
   return 0;

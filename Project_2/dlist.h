@@ -1,6 +1,7 @@
 #ifndef __DLIST_H__
 #define __DLIST_H__
 
+#include <iostream>
 
 /**********************************************************
  * INSTRUCTOR NOTE: Do not modify the class declarations! *
@@ -112,7 +113,7 @@ Dlist<T>::~Dlist() {
 // EFFECTS: returns true if list is empty, false otherwise
 template <typename T>
 bool Dlist<T>::IsEmpty() const {
-  return (first == nullptr);
+  return (first == nullptr || last == nullptr);
 }
 
 // MODIFIES: this
@@ -194,17 +195,15 @@ T Dlist<T>::RemoveBack()
     if (IsEmpty()) {
         throw emptyList();
     } else {
-
         T data = last->o;      //store the data
         node *temp = last;     //store the pointer
-
         //1 element case
-        if (first->next == nullptr) {
+        if (last->prev == nullptr) {
             last = nullptr;
             first = nullptr;
         } else {    //rest of cases
-            last = last->prev;     //move the first pointer to the next one
-            last->next = nullptr;  //update the new first node's prev pointer
+            last = last->prev;     //move the last pointer to the prev one
+            last->next = nullptr;  //update the new last node's next pointer
         }
         delete temp;            //delete the node
         return data;            //return the data that was in the node
@@ -222,16 +221,32 @@ void Dlist<T>::MakeEmpty() {
 //          from a source instance l to this instance
 template <typename T>
 void Dlist<T>::CopyAll(const Dlist &l) {
+
     node *location = l.first;
+    node *prev_n = nullptr;
     while (location != nullptr) {
 
+        //instantiate the new node
         node *n = new node();
         n->o = location->o;
-        n->next = location->next;
-        n->prev = location->prev;
+        n->next = nullptr;      //will be set later
+        n->prev = prev_n;
 
+        //handle head and next ptrs
+        if (first==nullptr) {   //1st node case
+            first = n;
+        } else {        //not 1st node case
+            prev_n->next = n;    //tell the prev node to connect to the current one
+        }
+
+        //move the current node back
+        prev_n = n;
+
+        //move the location forward
         location = location->next;
     }
+    //set the last node
+    last = prev_n;
 }
 
 // EFFECTS: called by destructor and operator= to remove and destroy
