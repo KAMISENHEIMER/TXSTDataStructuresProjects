@@ -30,15 +30,3 @@
 *.exe
 *.out
 *.app
-
-*.stackdump
-*/.DS_store/*
-*/.DS_Store
-*.png
-
-# Compiler Files
-*/.idea/*
-*/.vscode/*
-
-# Practice Project
-/RecursionPractice/*
