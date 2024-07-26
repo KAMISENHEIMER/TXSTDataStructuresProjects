@@ -165,7 +165,7 @@ void DoClear(Dlist<double> &stack) {
 void DoPrintAll(Dlist<double> &stack) {
     Dlist<double> printStack = stack;
     while (!printStack.IsEmpty()) {
-        std::cout << stack.RemoveFront() << " ";
+        std::cout << printStack.RemoveFront() << " ";
     }
     std::cout << "\n";
 }
