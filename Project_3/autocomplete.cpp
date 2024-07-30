@@ -27,8 +27,20 @@
 // especially if you're unable to finish the pseudocode or code. This can help
 // us award points in the code logic category.
 TreeNode<char> FindNode(TreeNode<char> node, std::string prefix, int index) {
-  // Implement this function.
-  return TreeNode<char>();
+    TreeNode<char> returnNode;  //start the returnNode at an empty node, if it is not passed correct values or cannot find the last node, return this.
+    if (!node.IsEmpty() && prefix.length() > 0) {     //catch for all things that should not happen
+        //stop when prefix length 0, or if the node is not contained in the tree
+        for (TreeNode<char> child: node.GetChildren()) {   //loop through all children of the current node until you find the first value
+            if (child.GetValue() == prefix.front()) {   //if the current child's value is the current prefix front, venture into it
+                if (prefix.length() > 1) {  //more than 1 letter in the prefix, venture further into the tree and into the prefix
+                    returnNode = FindNode(child, prefix.substr(1), index++);
+                } else {    //final value in prefix, return the child
+                    returnNode = child;
+                }
+            }
+        }
+    }
+    return returnNode;
 }
 
 /** QUESTION 2: COLLECTWORDS **/
@@ -46,8 +58,8 @@ TreeNode<char> FindNode(TreeNode<char> node, std::string prefix, int index) {
 // Add comments here that might help us to understand your thought process,
 // especially if you're unable to finish the pseudocode or code. This can help
 // us award points in the code logic category.  
-void CollectWords(TreeNode<char> node, std::string prefix, std::vector<std::string> &results) {
-  // Implement this function.
+void CollectWords(TreeNode<char> node, std::string prefix, std::vector <std::string> &results) {
+    // Implement this function.
 }
 
 /** QUESTION 3: GETCANDIDATES **/
@@ -65,7 +77,7 @@ void CollectWords(TreeNode<char> node, std::string prefix, std::vector<std::stri
 // Add comments here that might help us to understand your thought process,
 // especially if you're unable to finish the pseudocode or code. This can help
 // us award points in the code logic category.  
-std::vector<std::string> GetCandidates(TreeNode<char> root, std::string prefix) {
-  // Implement this function.
-  return std::vector<std::string>();
+std::vector <std::string> GetCandidates(TreeNode<char> root, std::string prefix) {
+    // Implement this function.
+    return std::vector<std::string>();
 }

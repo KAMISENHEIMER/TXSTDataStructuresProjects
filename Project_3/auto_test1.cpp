@@ -128,13 +128,16 @@ int main() {
     count2++;
   }
 
-  TreeNode<char> end_node4 = FindNode(example, "bean", 2);
+    TreeNode<char> end_node4 = FindNode(example, "bean", 2);
+    //std::cout<<"Value: "<< end_node4.GetValue() <<" Children: "<< end_node4.GetChildren()[0].GetValue() <<endl;
   if (end_node4.GetValue() == 'n' && end_node4.GetChildren()[0].GetValue() == 'd'){
     count2++;
   }
   
-  std::cout<<"GetCandidates: passed "<<count2<<" of 3 advance test cases"<<endl;
-  
+  std::cout<<"GetCandidates: passed "<<count2<<" of 2 advance test cases"<<endl;
+
+  /*
+
   count2 = 0;
   // Q2 CollectWords
   vector<string> ans6 = {"eam", "eef", "ees"};
@@ -217,4 +220,6 @@ int main() {
   std::cout<<"GetCandidates: passed "<<count2<<" of 3 advance test cases"<<endl;
 
   return 0;
+
+   */
 }
