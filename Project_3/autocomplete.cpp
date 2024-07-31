@@ -30,6 +30,8 @@ TreeNode<char> FindNode(TreeNode<char> node, std::string prefix, int index) {
     TreeNode<char> returnNode;  //start the returnNode at an empty node, if it is not passed correct values or cannot find the last node, return this.
     if (index>0) {      //chop off the first 'index' values from the prefix, I don't know why you'd want to do this, but some of the test cases require it.
         returnNode = FindNode(node, prefix.substr(index), 0);
+    } else if (prefix.length() == 0) {  //in the case that an empty prefix is passed in, return the given node, as any following letter will work
+        return node;
     } else {
         if (!node.IsEmpty() && prefix.length() > 0) {     //catch for all things that should not happen
             //stop when prefix length 0, or if the node is not contained in the tree
@@ -87,8 +89,10 @@ void CollectWords(TreeNode<char> node, std::string prefix, std::vector <std::str
 // COMMENTS:
 // Add comments here that might help us to understand your thought process,
 // especially if you're unable to finish the pseudocode or code. This can help
-// us award points in the code logic category.  
+// us award points in the code logic category.
 std::vector <std::string> GetCandidates(TreeNode<char> root, std::string prefix) {
-    // Implement this function.
-    return std::vector<std::string>();
+    TreeNode<char> finalLetter = FindNode(root, prefix, 0);     //get the node of the final letter in prefix
+    std::vector <std::string> results;
+    CollectWords(finalLetter, prefix, results);     //collect all the words can be made with that letter, append prefix to them, and store in 'results'
+    return results;
 }
