@@ -18,14 +18,21 @@
 // 
 // PSEUDOCODE:
 // algorithm FindNode
-//   Input:
-//   Output: 
+//   Input: A TreeNode to start from, A string representing the prefix to search through, an integer representing where to start from
+//   Output: A TreeNode representing the final letter in the prefix
 //   Your pseudocode goes here.
 //
+//  take off the first 'index' amount of values from the prefix
+//  handle the empty prefix case, just return the given node
+//  make sure the node and prefix is valid, and then loop through all the children of the node
+//    find the child that has the same value of the first letter of the prefix
+//      if its the last letter in prefix, return that node
+//      if there are still more letters, venture further into the tree
+//  finally, if none of the other cases are met, return an empty node to indicate nothing was found
+//
 // COMMENTS:
-// Add comments here that might help us to understand your thought process,
-// especially if you're unable to finish the pseudocode or code. This can help
-// us award points in the code logic category.
+// The instructions did not clearly define a use of the index variable, and I cannot think of a reason for it existing in an autocompleting word context,
+// so this program does not use it that much, only chopping off the first letters if an index is provided so that it satisfies certain test cases.
 TreeNode<char> FindNode(TreeNode<char> node, std::string prefix, int index) {
     TreeNode<char> returnNode;  //start the returnNode at an empty node, if it is not passed correct values or cannot find the last node, return this.
     if (index>0) {      //chop off the first 'index' values from the prefix, I don't know why you'd want to do this, but some of the test cases require it.
@@ -56,9 +63,13 @@ TreeNode<char> FindNode(TreeNode<char> node, std::string prefix, int index) {
 // 
 // PSEUDOCODE:
 // algorithm CollectWords
-//   Input:
-//   Output: 
+//   Input: A TreeNode to venture out from, a string to represent the prefix, a list of strings representing all the built words.
+//   Output: None (the results string array is modified instead)
 //   Your pseudocode goes here.
+//
+//   loop through all of the children of the given node
+//     if the value of this node is $, return the current prefix
+//     else, recursively travel into all of that notes children, while adding the current letter to the prefix
 //
 // COMMENTS:
 // Add comments here that might help us to understand your thought process,
@@ -82,14 +93,16 @@ void CollectWords(TreeNode<char> node, std::string prefix, std::vector <std::str
 //
 // PSEUDOCODE:
 // algorithm GetCandidates
-//   Input:
-//   Output: 
+//   Input: A TreeNode representing the root node of the tree, A string representing the beginning of the word to complete
+//   Output: A list of strings representing all the possible words starting with the prefix
 //   Your pseudocode goes here.
 //
+//   run FindNode to get the last node in the prefix
+//   run CollectWords to get all words from that node, and attach the prefix to them
+//   return all the words
+//
 // COMMENTS:
-// Add comments here that might help us to understand your thought process,
-// especially if you're unable to finish the pseudocode or code. This can help
-// us award points in the code logic category.
+// This is fairly straightforward, so long as the other 2 functions work, this one should as well, as it is really just calling both of them.
 std::vector <std::string> GetCandidates(TreeNode<char> root, std::string prefix) {
     TreeNode<char> finalLetter = FindNode(root, prefix, 0);     //get the node of the final letter in prefix
     std::vector <std::string> results;
