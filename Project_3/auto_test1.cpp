@@ -136,7 +136,7 @@ int main() {
   
   std::cout<<"GetCandidates: passed "<<count2<<" of 2 advance test cases"<<endl;
 
-  /*
+
 
   count2 = 0;
   // Q2 CollectWords
@@ -146,7 +146,12 @@ int main() {
   if (ans6 == example_list){
     count2++;
   }
-  example_list.clear();
+
+    for (int i = 0; i < example_list.size(); i++) {
+        std::cout<<example_list[i]<<endl;
+    }
+
+    example_list.clear();
 
   vector<string> ans7 = {"beam", "beef", "bees"};
   CollectWords(example.GetChildren()[1], "b", example_list);
@@ -185,6 +190,7 @@ int main() {
   example_list.clear();
   std::cout<<"CollectWords: passed "<<count2<<" of 3 advance test cases"<<endl;
  
+    /*
 
   // Q3 
   count2 = 0;
